@@ -39,4 +39,10 @@ class TodoService(private val todoRepository: ITodoRepository) : ITodoService {
             println("[!] Berhasil mengubah todo.")
         }
     }
+
+    override fun getTodoById(idTodo: Int): entities.Todo? {
+        return todoRepository.getAllTodos().find {
+            it.id == idTodo
+        }
+    }
 }

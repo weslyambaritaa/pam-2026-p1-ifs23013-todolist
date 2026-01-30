@@ -94,23 +94,30 @@ class TodoView(private val todoService: ITodoService) {
         if (strIdTodo != "x") {
             val idTodo = strIdTodo.toIntOrNull()
             if (idTodo != null) {
-                var newTitle = InputUtil.input("Judul baru (x Jika Batal)")
+                // Ambil data lama
+                val todoLama = todoService.getTodoById(idTodo)
 
-                if (newTitle == "") {
-                    val todoLama = todoService.getTodoById(idTodo)
-                    newTitle = todoLama.title
-                }
+                // Cek apakah data ditemukan agar tidak error saat akses .title
+                if (todoLama != null) {
+                    var newTitle = InputUtil.input("Judul baru (x Jika Batal)")
 
-                val newStatus = InputUtil.input("Apakah todo sudah selesai? (y/n)")
+                    if (newTitle == "x") return
 
-                if (newStatus == "y") {
-                    todoService.changeTodo(idTodo, newTitle, "true")
-                } else if (newStatus == "n") {
-                    todoService.changeTodo(idTodo, newTitle, "false")
+                    // Jika input kosong (hanya Enter), gunakan judul lama
+                    if (newTitle == "") {
+                        newTitle = todoLama.title
+                    }
+
+                    val newStatusInput = InputUtil.input("Apakah todo sudah selesai? (y/n)")
+
+                    if (newStatusInput == "y") {
+                        todoService.changeTodo(idTodo, newTitle, "true")
+                    } else if (newStatusInput == "n") {
+                        todoService.changeTodo(idTodo, newTitle, "false")
+                    }
                 } else {
-
+                    println("[!] Data dengan ID $idTodo tidak ditemukan.")
                 }
-
             } else {
                 println("[!] ID harus berupa angka.")
             }

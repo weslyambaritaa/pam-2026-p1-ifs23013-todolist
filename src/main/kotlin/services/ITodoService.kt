@@ -5,5 +5,5 @@ interface ITodoService {
     fun addTodo(title: String)
     fun removeTodo(id: Int)
     fun changeTodo(id: Int, newTitle: String, newStatus: String)
-    fun getTodoById(idTodo: Int)
+    fun getTodoById(idTodo: Int): entities.Todo?
 }
