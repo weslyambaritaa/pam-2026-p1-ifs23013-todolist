@@ -4,16 +4,15 @@ import entities.Todo
 import repositories.ITodoRepository
 
 class TodoService(private val todoRepository: ITodoRepository) : ITodoService {
+
     override fun showTodos() {
         val todos = todoRepository.getAllTodos()
-
         println("Daftar Todo:")
         var counter = 0
         for (todo in todos) {
             counter++
             println(todo)
         }
-
         if (counter <= 0) {
             println("- Data todo belum tersedia!")
         }
@@ -31,18 +30,17 @@ class TodoService(private val todoRepository: ITodoRepository) : ITodoService {
         }
     }
 
-    override fun changeTodo(id: Int, newTitle: String, newStatus: String) {
-        val success = todoRepository.changeTodo(id, newTitle, newStatus)
-        if (!success) {
-            println("[!] Gagal mengganti todo dengan ID: $id.")
-        } else {
-            println("[!] Berhasil mengubah todo.")
-        }
+    override fun updateTodo(id: Int, title: String, isFinished: Boolean): Boolean {
+        return todoRepository.updateTodo(id, title, isFinished)
     }
 
-    override fun getTodoById(idTodo: Int): entities.Todo? {
-        return todoRepository.getAllTodos().find {
-            it.id == idTodo
-        }
+    // Fungsi search yang sudah diperbaiki
+    override fun searchTodo(keyword: String): List<Todo> {
+        return todoRepository.searchTodo(keyword)
+    }
+
+
+    override fun sortTodo(type: Int, isAscending: Boolean) {
+        todoRepository.sortTodo(type, isAscending)
     }
 }
